@@ -15,7 +15,8 @@ function LandingPage() {
     useEffect(() => {
         const fetchDemoStats = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/auth/demo-stats');
+                const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+                const response = await axios.get(`${baseUrl}/auth/demo-stats`);
                 setStats(response.data);
             } catch (error) {
                 console.error('Failed to fetch demo stats:', error);
