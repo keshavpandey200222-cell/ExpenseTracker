@@ -1,0 +1,52 @@
+-- Create Users Table
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Wallets Table
+CREATE TABLE IF NOT EXISTS wallets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(50) NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Categories Table
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(50) NOT NULL,
+    type VARCHAR(10) NOT NULL CHECK (type IN ('INCOME', 'EXPENSE')),
+    is_default BOOLEAN DEFAULT 0,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Create Transactions Table
+CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    wallet_id INTEGER NOT NULL REFERENCES wallets(id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    type VARCHAR(10) NOT NULL CHECK (type IN ('INCOME', 'EXPENSE')),
+    amount DECIMAL(15, 2) NOT NULL,
+    description VARCHAR(255),
+    transaction_date DATE NOT NULL,
+    bill_image_url VARCHAR(500),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Budgets Table
+CREATE TABLE IF NOT EXISTS budgets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    amount DECIMAL(15, 2) NOT NULL,
+    period VARCHAR(20) DEFAULT 'MONTHLY',
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL
+);

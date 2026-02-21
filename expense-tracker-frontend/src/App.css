@@ -1,0 +1,4 @@
+/* App.css — minimal. All styles in index.css and page-level CSS */
+#root {
+  min-height: 100vh;
+}
