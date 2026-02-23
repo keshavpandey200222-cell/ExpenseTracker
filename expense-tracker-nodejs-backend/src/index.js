@@ -19,12 +19,12 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/wallets', walletRoutes);
-app.use('/api/transactions', transactionRoutes);
-app.use('/api/budgets', budgetRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/auth', authRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/wallets', walletRoutes);
+app.use('/transactions', transactionRoutes);
+app.use('/budgets', budgetRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date() });
